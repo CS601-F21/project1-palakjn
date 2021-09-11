@@ -35,8 +35,4 @@ public class InvertedIndex {
 
         return documents;
     }
-
-    public int getCount() {
-        return wordMap.size();
-    }
 }

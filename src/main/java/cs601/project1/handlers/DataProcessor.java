@@ -149,11 +149,11 @@ public class DataProcessor {
 
         Arrays.sort(words);
 
-        String word = words[0].replaceAll("[^a-zA-Z0-9]", "");;
+        String word = words[0].replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
         Document document = new Document(index);
 
         for (int i = 1; i < words.length; i++) {
-            String currentWord = words[i].replaceAll("[^a-zA-Z0-9]", "");
+            String currentWord = words[i].replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
             if(currentWord.equals(word)) {
                 document.incrementCounter();
@@ -161,7 +161,7 @@ public class DataProcessor {
             else {
                 invertedIndex.upsert(word, document);
                 word = currentWord;
-                document.reset();
+                document = new Document(index);
             }
         }
     }
