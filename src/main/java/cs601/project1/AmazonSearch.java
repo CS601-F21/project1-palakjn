@@ -1,15 +1,27 @@
 package cs601.project1;
 
-import cs601.project1.handlers.DataProcessor;
+import cs601.project1.controllers.DataProcessor;
 import cs601.project1.utils.Strings;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * A program to allow searching of a database of Amazon reviews and Q&A content.
+ * Allow users to perform below actions on the database:
+ *  1) find <asin>
+ *  2) reviewsearch <term>
+ *  3) qasearch <term>
+ *  4) reviewpartialsearch <term>
+ *  5) qapartialsearch <term>
+ *
+ * @author Palak Jain
+ * */
 public class AmazonSearch {
 
-    DataProcessor dataProcessor;
+    private DataProcessor dataProcessor;
 
     public AmazonSearch(){
         dataProcessor = new DataProcessor();
@@ -39,18 +51,25 @@ public class AmazonSearch {
         if(fileExists) {
             //Reading review file
             System.out.printf("Parsing review file %s...\n", reviewFileLocation);
-            boolean reviewsExist = amazonSearch.dataProcessor.readReviews(reviewFileLocation);
+            boolean reviewsExist = amazonSearch.getDataProcessor().readReviews(reviewFileLocation);
 
             //Reading qa file
             System.out.printf("Parsing QA file %s...\n", qaFileLocation);
-            boolean qaExist = amazonSearch.dataProcessor.readQA(qaFileLocation);
+            boolean qaExist = amazonSearch.getDataProcessor().readQA(qaFileLocation);
 
             if(reviewsExist && qaExist) {
                 //If an application reads both file successfully then, asking user for commands
 
                 amazonSearch.doActions();
             }
+            else {
+                System.out.println("No reviews or QA datasets found. Either dataset not in JSON format or required values are empty.");
+            }
         }
+    }
+
+    private DataProcessor getDataProcessor() {
+        return dataProcessor;
     }
 
     /**
@@ -71,19 +90,19 @@ public class AmazonSearch {
                 dataProcessor.findAsin(asin);
             }
             else if(choice.startsWith(Constants.REVIEWSEARCH)) {
-                String term = choice.split(" ")[1];
+                String term = choice.split(" ")[1].toLowerCase();
                 dataProcessor.reviewSearch(term, false);
             }
             else if(choice.startsWith(Constants.QASEARCH)) {
-                String term = choice.split(" ")[1];
+                String term = choice.split(" ")[1].toLowerCase();
                 dataProcessor.qaSearch(term, false);
             }
             else if(choice.startsWith(Constants.REVIEWPARTIALSEARCH)) {
-                String term = choice.split(" ")[1];
+                String term = choice.split(" ")[1].toLowerCase();
                 dataProcessor.reviewSearch(term, true);
             }
             else if(choice.startsWith(Constants.QAPARTIALSEARCH)) {
-                String term = choice.split(" ")[1];
+                String term = choice.split(" ")[1].toLowerCase();
                 dataProcessor.qaSearch(term, true);
             }
 
@@ -93,7 +112,7 @@ public class AmazonSearch {
 
     /**
      * Asks user to input a valid choice.
-     * Will continue to ask until user doesn't enter a valid choice.
+     *
      * @return Choice
      */
     private String getChoice() {
@@ -101,6 +120,7 @@ public class AmazonSearch {
         String choice = null;
         Scanner input = new Scanner(System.in);
 
+        //Will continue to ask until user doesn't enter a valid choice.
         while (!isValid) {
             System.out.print("Enter your choice: ");
             choice = input.nextLine();
