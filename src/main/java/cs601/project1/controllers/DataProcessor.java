@@ -4,7 +4,6 @@ import cs601.project1.Constants;
 import cs601.project1.models.*;
 import cs601.project1.utils.Strings;
 
-import javax.print.Doc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -145,14 +144,18 @@ public class DataProcessor {
                 Collections.sort(documentList);
             }
 
+            int numbering = 1;
+
             for (Document document : documentList) {
                 String output = reviewList.toString(document.getIndex());
 
-                if(isPartial) {
-                    System.out.printf("Term: %s.  %s. \n\n", term, output);
-                }
-                else {
-                    System.out.printf("Term: %s. Number of occurrences: %d. %s. \n\n", term, document.getCounter(), output);
+                if(!Strings.isNullOrEmpty(output)) {
+                    if (isPartial) {
+                        System.out.printf("\t%d) Term: %s.  %s. \n\n", numbering, term, output);
+                    } else {
+                        System.out.printf("\t%d) Term: %s. Number of occurrences: %d. %s. \n\n", numbering, term, document.getCounter(), output);
+                    }
+                    numbering++;
                 }
             }
         }
@@ -173,20 +176,24 @@ public class DataProcessor {
         List<Document> documentList = qaIndex.get(term, isPartial);
 
         if(documentList != null && documentList.size() > 0) {
-                if(!isPartial) {
-                    Collections.sort(documentList);
-                }
+            if(!isPartial) {
+                Collections.sort(documentList);
+            }
 
-                for (Document document : documentList) {
-                    String output = qaList.toString(document.getIndex());
+            int numbering = 1;
 
-                    if(isPartial) {
-                        System.out.printf("Term: %s. %s. \n\n", term, output);
+            for (Document document : documentList) {
+                String output = qaList.toString(document.getIndex());
+
+                if(!Strings.isNullOrEmpty(output)) {
+                    if (isPartial) {
+                        System.out.printf("\t%d) Term: %s. %s. \n\n", numbering, term, output);
+                    } else {
+                        System.out.printf("\t%d) Term: %s. Number of occurrences: %d. %s. \n\n", numbering, term, document.getCounter(), output);
                     }
-                    else {
-                        System.out.printf("Term: %s. Number of occurrences: %d. %s. \n\n", term, document.getCounter(), output);
-                    }
+                    numbering++;
                 }
+            }
         }
         else {
             System.out.printf("No term i.e.\"%s\" found. \n", term);

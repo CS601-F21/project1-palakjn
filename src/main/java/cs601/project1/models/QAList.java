@@ -37,7 +37,7 @@ public class QAList {
         StringBuilder stringBuilder = new StringBuilder();
         //Getting those questions and answers whose asin number is equal to arg "asin" value.
         List<QA> queries = allQAs.stream().filter(o -> o.getAsin().equalsIgnoreCase(asin)).toList();
-        int bulletNumbers = 0;
+        int bulletNumbers = 1;
 
         if(queries.size() > 0) {
             stringBuilder.append(String.format("Asin number: %s. Questions & Answers: \n", asin));

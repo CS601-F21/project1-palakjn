@@ -39,7 +39,7 @@ public class ReviewList {
         StringBuilder stringBuilder = new StringBuilder();
         //Getting those reviews whose asin number is equal to arg "asin" value.
         List<Review> reviews = allReviews.stream().filter(o -> o.getAsin().equalsIgnoreCase(asin)).toList();
-        int bulletNumbers = 0;
+        int bulletNumbers = 1;
 
         if(reviews.size() > 0) {
             stringBuilder.append(String.format("Asin number: %s. Reviews: \n", asin));

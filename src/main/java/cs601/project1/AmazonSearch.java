@@ -84,7 +84,7 @@ public class AmazonSearch {
         System.out.println(Constants.CHOICES);
         String choice = getChoice();
 
-        while (!choice.equals(Constants.EXIT)) {
+        while (!Strings.isNullOrEmpty(choice) && !choice.equals(Constants.EXIT)) {
             if(choice.startsWith(Constants.FIND)) {
                 String asin = choice.split(" ")[1];
                 dataProcessor.findAsin(asin);
@@ -116,15 +116,14 @@ public class AmazonSearch {
      * @return Choice
      */
     private String getChoice() {
-        boolean isValid = false;
         String choice = null;
         Scanner input = new Scanner(System.in);
 
-        //Will continue to ask until user doesn't enter a valid choice.
-        while (!isValid) {
-            System.out.print("Enter your choice: ");
-            choice = input.nextLine();
-            isValid = validateChoice(choice);
+        System.out.print("Enter your choice: ");
+        choice = input.nextLine();
+
+        if(!validateChoice(choice)) {
+            choice = null;
         }
 
         return choice;
