@@ -23,8 +23,6 @@ public class InvertedIndex {
      * @param document Holding an index of the actual document where the term exists.
      */
     public void upsert(String key, Document document) {
-        key = key.toLowerCase();
-
         List<Document> documentRefs = wordMap.getOrDefault(key, new ArrayList<>());
         documentRefs.add(document);
 
