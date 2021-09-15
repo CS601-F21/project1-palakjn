@@ -39,7 +39,7 @@ public class InvertedIndex {
         List<Document> documents = new ArrayList<>();
 
         if(!isPartial) {
-            documents = wordMap.get(term);
+            documents = wordMap.getOrDefault(term, null);
         }
         else {
             for (Map.Entry<String, List<Document>> entry : wordMap.entrySet()) {
